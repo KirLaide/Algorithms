@@ -1,0 +1,70 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml;
+
+namespace Greedy
+{
+    	//Continuous knapsack problem
+	//Первая строка содержит количество предметов 1≤n≤1031≤n≤103 и вместимость рюкзака 0≤W≤2⋅1060≤W≤2⋅106. 
+	//Каждая из следующих nn строк задаёт стоимость 0≤ci≤2⋅1060≤ci≤2⋅106 и объём 0<wi≤2⋅1060<wi≤2⋅106 предмета (nn, WW, cici, wiwi — целые числа).
+	//Выведите максимальную стоимость частей предметов (от каждого предмета можно отделить любую часть, стоимость и объём при этом пропорционально уменьшатся),
+	//помещающихся в данный рюкзак, с точностью не менее трёх знаков после запятой.
+	
+    class Program
+    {
+        class Item
+        {
+            public int cost;
+            public int weight;
+
+            public Item(int cost, int weight)
+            {
+                this.cost = cost;
+                this.weight = weight;
+            }
+        }
+        
+        static void Main(string[] args)
+        {
+            var line = Console.ReadLine();
+            var input = line.Split();
+            int n = int.Parse(input[0]);
+            int W = int.Parse(input[1]);
+            Item[] items = new Item[n];
+            for (int i = 0; i < n; i++)
+            {
+                line = Console.ReadLine();
+                var parts = line.Split();
+                items[i] = new Item(int.Parse(parts[0]), int.Parse(parts[1]));
+            }
+            Array.Sort(items, (x, y) =>
+            {
+                decimal r1 = (decimal)x.cost / x.weight;
+                decimal r2 = (decimal)y.cost / y.weight;
+
+                return -decimal.Compare(r1, r2);
+            });
+
+            double result = 0;
+            foreach(Item item in items)
+            {
+                if(item.weight <= W)
+                {
+                    result += item.cost;
+                    W -= item.weight;
+                } else
+                {
+                    result += (double)item.cost * W / item.weight;
+                    W = 0;
+                }
+            }
+            Console.WriteLine(result);
+
+            Console.ReadLine();   
+        }
+    }
+}
+

@@ -1,0 +1,70 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml;
+
+namespace SegmentsWithPoints
+{
+    //Greedy algorithm
+    //По данным nn отрезкам необходимо найти множество точек минимального размера, для которого каждый из отрезков содержит хотя бы одну из точек.
+    //В первой строке дано число 1≤n≤1001≤n≤100 отрезков.
+    //Каждая из последующих nn строк содержит по два числа 0≤l≤r≤1090≤l≤r≤109, 
+    //задающих начало и конец отрезка.Выведите оптимальное число mm точек и сами mm точек.
+    //Если таких множеств точек несколько, выведите любое из них.
+    class Program
+    {
+        public static String[] cover(int[][] arr)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0, l = arr.Length; i < l; i++)
+            {
+                int point = arr[i][1];
+                for (int j = i; j < l && point <= arr[j][1] && point >= arr[j][0]; j++)
+                {
+                    i = j;
+                }
+                sb.Append(point).Append(" ");
+
+            }
+            return sb.ToString().Split(new Char[0]);
+        }
+
+        static void Main(string[] args)
+        {
+            var line = Console.ReadLine();
+            var n = int.Parse(line);
+            var segments = new int[n][];
+            for (int i = 0; i < n; i++)
+                segments[i] = new int[2];
+
+            for (int i = 0; i < n; i++)
+            {
+                line = Console.ReadLine();
+                var parts = line.Split();
+                segments[i][0] = int.Parse(parts[0]);
+                segments[i][1] = int.Parse(parts[1]);
+            }
+
+
+            if (n >= 1 && n <= 100)
+            {
+                Array.Sort(segments, (x, y) =>
+                {
+                    int v = x[1] - y[1];
+                    return v != 0 ? v : x[0] - y[0];
+                });
+
+                String[] res = cover(segments);
+                Console.WriteLine(res.Length - 1);
+                for (int j = 0; j < res.Length; j++)
+                {
+                    Console.WriteLine(res[j] + " ");
+                }
+            }
+
+        }
+    }
+}
+
