@@ -56,6 +56,46 @@ namespace BinaryTree
             return 1 + Math.max( treeHeight( n.getLeft()), treeHeight(n.getRight()));
         }
 
+        //O(n) Traversal with recursion
+        public void preorderTraversal(Node root)
+        {
+            if(root == null) return;
+            root.printValue();
+            preorderTraversal( root.getLeft());
+            preorderTraversal( root,getRight());
+        }
+        public void inorderTraversal(Node root)
+        {
+            if(root == null) return;
+            preorderTraversal( root.getLeft());
+            root.printValue();
+            preorderTraversal( root,getRight());
+        }
+        public void postorderTraversal(Node root)
+        {
+            if(root == null) return;
+            preorderTraversal( root.getLeft());
+            preorderTraversal( root,getRight());
+            root.printValue();
+        }
+
+        //O(n) Traversal with out recursion (with stack)
+        public void preorderTraversalWithStack(Node root)
+        {
+            NodeStack stack = new NodeStack();
+            stack.push(root);
+            while(stack.size() > 0)
+            {
+                Node curr = stack.pop();
+                curr.printValue();
+                Node n = curr.getRight();
+                if( n != null ) stack.push(n);
+                n = curr.getLeft();
+                if( n!= null) stack.push(n)
+            }
+        }
+
+
     }
     
 }
