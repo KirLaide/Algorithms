@@ -95,6 +95,15 @@ namespace BinaryTree
             }
         }
 
+        //Rotation O(1)
+        publci Node rotationRight()
+        {
+            Node newRoot = left;
+            left = newRoot.right;
+            newRoot.right = this;
+            return newRoot;
+        }
+
 
     }
     
