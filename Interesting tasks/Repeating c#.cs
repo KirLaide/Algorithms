@@ -105,7 +105,7 @@ https://msdn.microsoft.com/ru-ru/library/4d43ts61(v=vs.90).aspx
 9.
 Каким образом можно прекратить обработку исключения в блоке catch (Exception ex) и пробросить исключение дальше по стеку, при этом сохранив стек исключения?
 Ваш ответ:
-  -throw new Exception(ex);
+  
   +throw;
 https://msdn.microsoft.com/ru-ru/library/0yd65esw.aspx
 
@@ -129,7 +129,7 @@ https://msdn.microsoft.com/ru-ru/library/0yd65esw.aspx
       Console.WriteLine(a.V2);
     }
 Ваш ответ:
-  -Адрес объекта object в памяти
+ 
   Выводит:
   Additional information: Не удалось загрузить тип "A" из сборки "ConsoleApplication4, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", 
   так как он содержит поле объекта со смещением 0, которое неверно выровнено или перекрыто полем, не представляющим объект.
@@ -325,3 +325,10 @@ https://msdn.microsoft.com/ru-ru/library/system.object.finalize(v=vs.110).aspx
     Action<object> a5 = new Action<string>(delegate { });
 Ваш ответ:
   2, 3, 5
+
+
+  Pro .NET Perfomance
+  Under the Hoood of .NET Memory Management
+  Advanced .NET Debugging
+  Writing High-Perfomance .NET Code 
+  Systems Perfomance 
