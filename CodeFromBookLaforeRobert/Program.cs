@@ -97,7 +97,6 @@ class DArray
     }
 }
 #endregion
-
 #region ShellSort
 
 class ArraySh
@@ -155,125 +154,208 @@ class ArraySh
 
 
 #endregion
-class Program
+#region QuickSort
+
+class ArrayIns
 {
-    public static void insert(int[] array, int value, int startfrom)
+    private long[] theArray;
+    private int nElems;
+
+    public ArrayIns(int max)
     {
-        int i = startfrom;
-        string temp;
-        for (i = startfrom; i >= 0 && array[i] > value; i--)
-        {
-            array[i+1] = array[i];
-        }
-        array[i + 1] = value;
-       
-       
+        theArray = new long[max];
+        nElems = 0;
     }
-    public static void PrintArrayInLine(int[] a)
+
+    public void insert(long value)
     {
-        string textForPrint = "";
-        foreach (var v in a)
-        {
-            textForPrint += v.ToString();
-        }
-        Console.WriteLine(textForPrint);
+        theArray[nElems] = value;
+        nElems++;
     }
-    public static int GetMax(int[] a)
+
+    public void display()
     {
-        int maxElement = 0;
-        int indexOfMaxEl = -1;
-        if (a.Length > 0)
+        Console.WriteLine("A=");
+        for (int j = 0; j < nElems; j++)
         {
-            for (int i = 0; i < a.Length; i++)
-            {
-                if (a[i] > maxElement)
-                {
-                    maxElement = a[i];
-                    indexOfMaxEl = i;
-                }
-            }
-            if (indexOfMaxEl > -1)
-            {
-                for (int j = indexOfMaxEl; j < a.Length-1; j++)
-                {
-                    a[j] = a[j + 1];
-                }
-                
-            }
+            Console.WriteLine(theArray[j] + " ");
         }
+        Console.WriteLine("");
+    }
+
+    public void quickSort()
+    {
+        recQuickSort(0, nElems - 1);
+    }
+
+    public void recQuickSort(int left, int right)
+    {
+        if (right - left <= 0)
+            return;
         else
         {
-            maxElement = -1;
+            long pivot = theArray[right];
+
+            int partition = partitionIt(left, right, pivot);
+            recQuickSort(left, partition-1);
+            recQuickSort(partition+1, right);
         }
+    }
+
+    public int partitionIt(int left, int right, long pivot)
+    {
+        int leftPtr = left - 1;
+        int rightPtr = right;
+        while (true)
+        {
+            while (theArray[++leftPtr] < pivot)
+                ; //(nop)
+            while (right > 0 && theArray[--rightPtr] > pivot)
+                ; //(nop)
+            if (leftPtr >= rightPtr)
+            {
+                break;
+            }
+            else
+            {
+                swap(leftPtr, rightPtr);
+            }
+           
+        }
+        swap(leftPtr, right);
+        return leftPtr;
+    }
+
+    public void swap(int dex1, int dex2)
+    {
+        long temp;
+        temp = theArray[dex1];
+        theArray[dex1] = theArray[dex2];
+        theArray[dex2] = temp;
+    }
+} 
+#endregion
+class Program
+{
+    #region Base Sorting
+        public static void insert(int[] array, int value, int startfrom)
+        {
+            int i = startfrom;
+            string temp;
+            for (i = startfrom; i >= 0 && array[i] > value; i--)
+            {
+                array[i+1] = array[i];
+            }
+            array[i + 1] = value;
+       
+       
+        }
+        public static void PrintArrayInLine(int[] a)
+        {
+            string textForPrint = "";
+            foreach (var v in a)
+            {
+                textForPrint += v.ToString();
+            }
+            Console.WriteLine(textForPrint);
+        }
+        public static int GetMax(int[] a)
+        {
+            int maxElement = 0;
+            int indexOfMaxEl = -1;
+            if (a.Length > 0)
+            {
+                for (int i = 0; i < a.Length; i++)
+                {
+                    if (a[i] > maxElement)
+                    {
+                        maxElement = a[i];
+                        indexOfMaxEl = i;
+                    }
+                }
+                if (indexOfMaxEl > -1)
+                {
+                    for (int j = indexOfMaxEl; j < a.Length-1; j++)
+                    {
+                        a[j] = a[j + 1];
+                    }
+                
+                }
+            }
+            else
+            {
+                maxElement = -1;
+            }
         
-        return maxElement;
-    }
-    public static void BubleSort(int[] a)
-    {
-        for (int i = a.Length-1; i > 0; i--)
+            return maxElement;
+        }
+        public static void BubleSort(int[] a)
         {
-            for (int j = 0; j < i; j++)
+            for (int i = a.Length-1; i > 0; i--)
             {
-                if (a[j] > a[j + 1])
+                for (int j = 0; j < i; j++)
                 {
-                    int temp = a[j];
-                    a[j] = a[j + 1];
-                    a[j + 1] = temp;
+                    if (a[j] > a[j + 1])
+                    {
+                        int temp = a[j];
+                        a[j] = a[j + 1];
+                        a[j + 1] = temp;
+                    }
                 }
             }
         }
-    }
-    public static void SelectionSort(int[] a)
-    {
-        int minIndex, inIndex, outIndex, temp;
-
-        for (outIndex = 0; outIndex < a.Length - 1; outIndex++)
+        public static void SelectionSort(int[] a)
         {
-            minIndex = outIndex;
-            for (inIndex = outIndex + 1; inIndex < a.Length - 1; inIndex++)
+            int minIndex, inIndex, outIndex, temp;
+
+            for (outIndex = 0; outIndex < a.Length - 1; outIndex++)
             {
-                if (a[inIndex] < a[minIndex])
+                minIndex = outIndex;
+                for (inIndex = outIndex + 1; inIndex < a.Length - 1; inIndex++)
                 {
-                    minIndex = inIndex;
+                    if (a[inIndex] < a[minIndex])
+                    {
+                        minIndex = inIndex;
+                    }
+
                 }
-
+                temp = a[outIndex];
+                a[outIndex] = a[minIndex];
+                a[minIndex] = temp;
             }
-            temp = a[outIndex];
-            a[outIndex] = a[minIndex];
-            a[minIndex] = temp;
         }
-    }
-    public static void InsertationSort(int[] a)
-    {
-        int temp;
-        int inIndex;
-
-        for (int i = 1; i < a.Length-1; i++)
+        public static void InsertationSort(int[] a)
         {
-            temp = a[i];
-            inIndex = i;
+            int temp;
+            int inIndex;
 
-            while (inIndex > 0 && a[inIndex - 1] >= temp)
+            for (int i = 1; i < a.Length-1; i++)
             {
-                a[inIndex] = a[inIndex - 1];
-                --inIndex;
+                temp = a[i];
+                inIndex = i;
+
+                while (inIndex > 0 && a[inIndex - 1] >= temp)
+                {
+                    a[inIndex] = a[inIndex - 1];
+                    --inIndex;
+                }
+                a[inIndex] = temp;
             }
-            a[inIndex] = temp;
         }
-    }
-
-   public static void Main()
+    #endregion
+    public static void Main()
     {
-
-        int[] array = {6,5,37,42,7,9,10,200};
-        //insert(array, 200, 6);
-        //inserttest(array, 10);
-        //Console.WriteLine(GetMax(array));
-        //BubleSort(array);
-        //SelectionSort(array);
-        //PrintArrayInLine(array);
-        //InsertationSort(array);
-        //PrintArrayInLine(array);
+        #region base main
+            //int[] array = { 6, 5, 37, 42, 7, 9, 10, 200 };
+            //insert(array, 200, 6);
+            //inserttest(array, 10);
+            //Console.WriteLine(GetMax(array));
+            //BubleSort(array);
+            //SelectionSort(array);
+            //PrintArrayInLine(array);
+            //InsertationSort(array);
+            //PrintArrayInLine(array);
+        #endregion
         #region MergeMain
         /*MergeSort*/
         /*
@@ -296,9 +378,8 @@ class Program
         */
         /*EndMergeSort*/
         #endregion
-
         #region ShellMain
-            int maxSize = 10;
+        /*int maxSize = 10;
             ArraySh arr;
             Random rnd = new Random();
             arr = new ArraySh(maxSize);
@@ -309,8 +390,23 @@ class Program
            }
            arr.display();
            arr.shellSort();
-           arr.display();
-       #endregion
+           arr.display();*/
+        #endregion
+        #region QuickMain
+            int maxSize = 16; // Размер массива
+            ArrayIns arr;
+            Random rnd = new Random();
+            arr = new ArrayIns(maxSize);
+            for (int j = 0; j < maxSize; j++)
+            {
+                long n = (int)(rnd.Next() * 99);
+                arr.insert(n);
+            }
+            arr.display();
+            arr.quickSort();
+            arr.display();
+        #endregion
+
             Console.ReadLine();
     }
 }
